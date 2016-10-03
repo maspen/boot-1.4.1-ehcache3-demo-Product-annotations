@@ -26,7 +26,7 @@ application.properties includes: `spring.cache.jcache.config=ehcache3.xml`
 
 run the application in debug mode
 
-* you won't see any reference to ehcache3.xml file being loaded (the configuration)
+* you won't see any reference to ehcache3.xml file being loaded (the configuration). Expecting something link `Loading Ehcache XML configuration from /.../boot-1.4.1-ehcache-3.1.2-demo-Product-programmatic/target/classes/ehcache3.xml.`
 * part of the console output:
 ```
 ...
