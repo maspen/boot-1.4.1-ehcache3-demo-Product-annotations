@@ -37,3 +37,11 @@ EhCacheCacheConfiguration did not match
       - @ConditionalOnClass did not find required classes 'net.sf.ehcache.Cache', 'org.springframework.cache.ehcache.EhCacheCacheManager' (OnClassCondition)
 ...
 ```
+note `net.sf.ehcache.Cache` which is the old (ehcache 2.x) namespace
+
+3. as described above, there is a 5 second expiry set in ehcache3.xml. When you hit the url http://localhost:8080/products/all you'll see that the initial 'hit' takes ~ 500 millis; this is expected. THen you hit this url immediately after, you'll see that it took ~ 0  millis; which is also expected. When you wait for more than 5 seconds, however, you'll notice that the requrest took ~ 0 millis; which is incorrect. This suggests that the xml configuration is not being loaded/used correctly.
+
+4. created a test (ApplicationTest#validateCacheExpiresEvery5Seconds()) which checks
+to see that after a 6 second ‘sleep’ (1 second longer than expiry which is set to 5 seconds), the ProductServiceImpl#getProductById()  is NOT called. The test passes!?
+
+5. using Postman & method ProductServiceImpl#updateProductName to update (annotated w/ `@CachePut`) product’s ‘1’ name from ‘one’ to ‘one-test’. waiting 10+ seconds to call ProductController#getAllProducts (which, in turn, calls the service method getAll() which is annotated w/ `@Cacheable`) & the returned list does NOT include this change -> cached result even though config. states cache expires in 5 seconds & update method annotated with CachePut. When calling the service’s non-cached method, the updated product name is displayed
