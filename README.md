@@ -23,3 +23,17 @@ application.properties includes: `spring.cache.jcache.config=ehcache3.xml`
 
 </config>
 ```
+
+run the application in debug mode
+
+1. you won't see any reference to ehcache3.xml file being loaded (the configuration)
+2. part of the console output:
+```
+...
+Negative matches:
+-----------------
+...
+EhCacheCacheConfiguration did not match
+      - @ConditionalOnClass did not find required classes 'net.sf.ehcache.Cache', 'org.springframework.cache.ehcache.EhCacheCacheManager' (OnClassCondition)
+...
+```
